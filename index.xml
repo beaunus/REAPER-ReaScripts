@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Beaunus Scripts" commit="8b16e1b60a7b731d8574e60b9ca7091c262ff170">
+<index version="1" name="Beaunus Scripts" commit="154377905250e6e40a3b059f8d9afc3584f6131c">
   <category name="JSFX/MIDI">
     <reapack name="X-Raym_Note to CC.jsfx" type="effect">
-      <version name="1.0" author="X-Raym" time="2017-01-01T05:19:56Z">
+      <version name="1.0" author="beaunus" time="2017-01-01T05:19:56Z">
         <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/8b16e1b60a7b731d8574e60b9ca7091c262ff170/JSFX/MIDI/X-Raym_Note%20to%20CC.jsfx</source>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/154377905250e6e40a3b059f8d9afc3584f6131c/JSFX/MIDI/X-Raym_Note%20to%20CC.jsfx</source>
       </version>
     </reapack>
   </category>
