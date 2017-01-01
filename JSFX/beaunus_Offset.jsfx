@@ -12,12 +12,14 @@
   + Initial Release
  */
 
+desc: Offset
+
 slider1:0<-96,24,.0001>input gain (dB)
 slider3:0<0,1,1>normalize
 slider4:0<-.5,.5,.000001>offset
 slider15:0<-96,24,.0001>output gain (dB)
 
-import beaunus_Library
+import beaunus_Library.jsfx
 
 @init
 

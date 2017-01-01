@@ -12,7 +12,9 @@
   + Initial Release
  */
 
-import beaunus_Library
+desc: Wave Shaper
+
+import beaunus_Library.jsfx
 
 slider1: 0 < -96, 96, .0001 > initial gain(dB)
 

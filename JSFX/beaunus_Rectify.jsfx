@@ -12,6 +12,8 @@
   + Initial Release
  */
 
+desc: Rectify
+
 slider1:1<0,1,.000001>limit
 slider2:1<0,1,1>top only -> both sides
 slider3:0<0,1,1>limit -> rectify
