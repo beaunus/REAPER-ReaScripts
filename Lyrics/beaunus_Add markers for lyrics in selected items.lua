@@ -17,10 +17,8 @@ num_selected_items = reaper.CountSelectedMediaItems()
 reaper.ClearConsole()
 
 -- Iterate through all selected items.
-
 for i = 0, num_selected_items - 1 do
   item = reaper.GetSelectedMediaItem(0, i)
-  --  item_position = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
   -- Get the active take
   take = reaper.GetActiveTake(item)
   -- Process the take IFF the take contains MIDI
