@@ -1,0 +1,35 @@
+desc:beaunus: Offset
+
+slider1:0<-96,24,.0001>input gain (dB)
+slider3:0<0,1,1>normalize
+slider4:0<-.5,.5,.000001>offset
+slider15:0<-96,24,.0001>output gain (dB)
+
+import beaunus-jsfx/beaunus.library
+
+@init
+
+@slider
+inputAmplitudeFactor=dbToProportion(slider1); 
+normalize = slider3; 
+offset = slider4; 
+outputAmplitudeFactor=dbToProportion(slider15); 
+
+@block
+
+@sample
+
+spl0*=inputAmplitudeFactor;
+spl1*=inputAmplitudeFactor;
+
+normalize && (offset != 0) ? (
+  spl0*=sign(offset)*(1-(abs(offset))); 
+  spl1*=sign(offset)*(1-(abs(offset))); 
+); 
+
+spl0+=offset; 
+spl1+=offset; 
+
+spl0*=outputAmplitudeFactor;
+spl1*=outputAmplitudeFactor;
+

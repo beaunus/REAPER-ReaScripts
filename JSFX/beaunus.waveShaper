@@ -1,0 +1,204 @@
+desc: beaunus: Wave Shaper
+
+import beaunus-jsfx/beaunus.library
+
+slider1: 0 < -96, 96, .0001 > initial gain(dB)
+
+slider3: 0 < 0, 1, .0001 > transistor - > tube(style)
+slider4: 0 < 0, 1, 1 > hold meters
+
+slider5: 0 < 0, 1, .0001 > sine - > circle(saturation)
+slider6: 0 < 0, 2, .0001 > sine - > triangle(expansion)
+slider7: 0 < 0, 1, .0001 > triangle - > sine(saturation)
+slider8: 1 < 0, 10, .0001 > logistic intensity(saturation)
+slider9: 0 < 0, 1, .0001 > logistic amount(saturation)
+slider10: 0 < 0, 1, .0001 > exponential(expansion)
+slider11: 0 < 0, 1, .0001 > exponential(saturation)
+
+slider48: 0 < 0, 3, .0001 > effect of circle(dB)
+slider49: 0 < 0, 3, .0001 > effect of triangle(dB)
+slider50: 0 < 0, 3, .0001 > effect of sine(dB)
+slider51: 0 < 0, 3, .0001 > effect of logistic(dB)
+slider52: 0 < 0, 3, .0001 > effect of exponential(dB)
+slider53: 0 < 0, 3, .0001 > effect of clipping(dB)
+
+slider59: 0 < 0, 1, 1 > manual - > automatic
+slider60: 0 < -3, 3, .0001 > output offset
+slider61: 0 < 0, 1, 1 > reset average
+slider62: 0 < -3, 3, .0001 > average value
+
+slider64: 0 < -96, 24, .0001 > final gain(dB)
+@init
+
+sampleCounter = 0;
+averageValue = 0;
+
+// Clear all meters to re-evaluate maximum effect of processing.
+function clearAllMeters()(
+    slider48 = 0; slider49 = 0; slider50 = 0; slider51 = 0; slider52 = 0; slider53 = 0;
+);
+
+@slider
+initialAmplitudeFactor = dbToProportion(slider1);
+
+bias = slider3 / 2;
+holdMeters = slider4;
+
+circleFactor = slider5 ^ 2;
+triangleFactor = slider6 ^ ($e / 2);
+sineFactor = slider7;
+logisticIntensity = slider8 ^ 2;
+logisticAmount = slider9;
+exponentialExpansionAmount = (slider10 ^ 4 + 1) + (slider10 ^ 4 * 10);
+exponentialSaturationAmount = (1 - slider11 ^ 4);
+
+automaticOffset = slider59;
+resetAverage = slider61;
+
+averageValue = 0;
+sampleCounter = 0;
+
+automaticOffset ? (
+    outputOffset = -averageValue;
+) : (
+    outputOffset = slider60;
+);
+
+finalAmplitudeFactor = dbToProportion(slider64);
+clearAllMeters();
+
+@block
+
+@sample
+
+/* 
+Apply ititial gain, 
+in order to drive into the saturation.
+*/
+spl0 *= initialAmplitudeFactor;
+spl1 *= initialAmplitudeFactor;
+
+/*
+Bias signal for tube style processing 
+(more even harmonics.
+*/
+spl0 *= (1 - (bias));
+spl1 *= (1 - (bias));
+spl0 += bias;
+spl1 += bias;
+
+/*
+samplePreProcessBuffer; 
+sampleIndex = 0; 
+while(sampleIndex < num_ch) (
+  samplePreProcessBuffer[sampleIndex] = spl(sampleIndex); 
+  sampleIndex +=1; 
+); 
+*/
+
+spl0BeforeProcessing = spl0;
+spl1BeforeProcessing = spl1;
+circleFactor != 0 ?
+    (
+        abs(spl0) > getSaturationCircleThreshold(circleFactor) ?
+        (
+            spl0 = saturateCircle(spl0, circleFactor);
+        ); abs(spl1) > getSaturationCircleThreshold(circleFactor) ?
+        (
+            spl1 = saturateCircle(spl1, circleFactor);
+        );
+    );
+
+holdMeters ? (
+    slider48 = max(maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1), slider48);
+) : (
+    slider48 = maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1);
+);
+sliderchange(slider48);
+
+spl0BeforeProcessing = spl0;
+spl1BeforeProcessing = spl1;
+spl0 = saturateTriangle(spl0, triangleFactor);
+spl1 = saturateTriangle(spl1, triangleFactor);
+
+holdMeters ? (
+    slider49 = max(maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1), slider49);
+) : (
+    slider49 = maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1);
+);
+
+sliderchange(slider49);
+
+spl0BeforeProcessing = spl0;
+spl1BeforeProcessing = spl1;
+spl0 = saturateSine(spl0, sineFactor);
+spl1 = saturateSine(spl1, sineFactor);
+holdMeters ? (
+    slider50 = max(maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1), slider50);
+) : (
+    slider50 = maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1);
+);
+sliderchange(slider50);
+
+spl0BeforeProcessing = spl0;
+spl1BeforeProcessing = spl1;
+logisticIntensity != 0 ?
+    (
+        spl0 = saturateLogistic(spl0, logisticIntensity, logisticAmount); spl1 = saturateLogistic(spl1, logisticIntensity, logisticAmount);
+    );
+holdMeters ? (
+    slider51 = max(maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1), slider51);
+) : (
+    slider51 = maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1);
+);
+sliderchange(slider51);
+
+spl0BeforeProcessing = spl0;
+spl1BeforeProcessing = spl1;
+spl0 = saturateExponential(spl0, exponentialSaturationAmount, exponentialExpansionAmount);
+spl1 = saturateExponential(spl1, exponentialSaturationAmount, exponentialExpansionAmount);
+holdMeters ? (
+    slider52 = max(maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1), slider52);
+) : (
+    slider52 = maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1);
+);
+sliderchange(slider52);
+
+spl0BeforeProcessing = spl0;
+spl1BeforeProcessing = spl1;
+// Clip (if necessary)
+spl0 = max(min(spl0, 1), -1);
+spl1 = max(min(spl1, 1), -1);
+holdMeters ? (
+    slider53 = max(maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1), slider53);
+) : (
+    slider53 = maximumEffectOfProcessing(spl0BeforeProcessing, spl0, spl1BeforeProcessing, spl1);
+);
+sliderchange(slider53);
+
+/*
+Un-bias signal.
+*/
+spl0 -= bias;
+spl1 -= bias;
+spl0 /= (1 - (bias));
+spl1 /= (1 - (bias));
+
+spl0 += outputOffset;
+spl1 += outputOffset;
+
+averageOfThisSample = (spl0 + spl1) / 2;
+
+averageValue = (averageValue * sampleCounter) + averageOfThisSample;
+sampleCounter += 1;
+averageValue /= sampleCounter;
+slider62 = averageValue;
+
+sliderchange(slider62);
+
+/*
+Apply final make-up gain, 
+in order to compensate for the reduction in level.
+*/
+spl0 *= finalAmplitudeFactor;
+spl1 *= finalAmplitudeFactor;

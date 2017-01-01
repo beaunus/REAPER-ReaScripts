@@ -1,0 +1,50 @@
+desc: beaunus library
+
+@init
+
+//Map a [-1,1] sine wave to a [-1,1] triangle wave.
+function triangleFunction(factor, value)(
+    ((1 - factor) * value) + (factor * 2 * asin(value) / $pi);
+);
+
+// Return the current saturation threshold.
+function getSaturationCircleThreshold(circleFactor)(
+    1 - (circleFactor / sqrt(circleFactor));
+);
+
+// Return the sample value, with saturation applied.
+function saturateCircle(sampleValue, circleFactor)(
+    sign(sampleValue) * (1 - (circleFactor / (2 * sqrt(circleFactor) + (sign(sampleValue) * sampleValue) - 1)));
+);
+
+// Return the sample value, with triangle saturation applied.
+function saturateTriangle(sampleValue, triangleFactor)(
+    triangleFunction(triangleFactor, sampleValue);
+);
+
+// Return the sample value, with sine saturation applied.
+function saturateSine(sampleValue, sineFactor)(
+    (1 - sineFactor) * sampleValue + sineFactor * (sin(($pi / 2) * sampleValue));
+);
+
+// Return the sample value, with logistic curve saturation applied.
+function saturateLogistic(sampleValue, logisticIntensity, logisticAmount)(
+    (1 - logisticAmount) * sampleValue + logisticAmount * (((2 / (1 + exp(-logisticIntensity * sampleValue))) - 1) / ((2 / (1 + exp(-logisticIntensity))) - 1));
+);
+
+// Return the sample value, with exponential saturation applied.
+function saturateExponential(sampleValue, exponentialSaturationAmount, exponentialExpansionAmount)(
+    expansion = sign(sampleValue) * abs(sampleValue) ^ (exponentialExpansionAmount); sign(sampleValue) * abs(expansion) ^ (exponentialSaturationAmount);
+);
+
+function maximumEffectOfProcessing(sample0Before, sample0After, sample1Before, sample1After)(
+    effectInPercent = abs(max(abs(sample0Before) - abs(sample0After), abs(sample1Before) - abs(sample1After))); 6 * log(effectInPercent + 1) / log(2);
+);
+
+function dbToProportion(dbValue)(
+    10 ^ (dbValue / 20);
+);
+
+function proportionToDb(proportion)(
+    (20 * log(proportion)) / (log(10));
+);
