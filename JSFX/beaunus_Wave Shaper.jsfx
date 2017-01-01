@@ -12,7 +12,7 @@
   + Initial Release
  */
 
-desc: WaveShaper
+desc: Wave Shaper
 
 slider1: 0 < -96, 96, .0001 > initial gain(dB)
 
