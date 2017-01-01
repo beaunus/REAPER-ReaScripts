@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Beaunus Scripts" commit="c1de5fe77368ab155a0107d840a41ccd435b138f">
+<index version="1" name="Beaunus Scripts" commit="f885919ae8cd61afc1489f832c9e6ad0b6123f6c">
   <category name="JSFX">
     <reapack name="beaunus_Gravity.jsfx" type="effect">
       <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
@@ -25,10 +25,10 @@
         <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Rectify.jsfx</source>
       </version>
     </reapack>
-    <reapack name="beaunus_WaveShaper.jsfx" type="effect">
-      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
+    <reapack name="beaunus_Wave Shaper.jsfx" type="effect">
+      <version name="1.0" author="beaunus" time="2017-01-01T09:03:47Z">
         <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_WaveShaper.jsfx</source>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/f885919ae8cd61afc1489f832c9e6ad0b6123f6c/JSFX/beaunus_Wave%20Shaper.jsfx</source>
       </version>
     </reapack>
   </category>
