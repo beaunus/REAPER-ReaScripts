@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Beaunus Scripts" commit="7d38b54632403c512ef94622883a144fba78255a">
+<index version="1" name="Beaunus Scripts" commit="c794fed84b4f43dfc0148479719090fe035f7019">
   <category name="Lyrics">
-    <reapack name="beaunus-lyrics to markers.lua" type="script">
-      <version name="1.0" time="2017-01-01T05:36:37Z">
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/7d38b54632403c512ef94622883a144fba78255a/Lyrics/beaunus-lyrics%20to%20markers.lua</source>
+    <reapack name="beaunus_Add markers for lyrics in selected items.lua" type="script">
+      <version name="1.0" author="beaunus" time="2017-01-01T08:00:09Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/ca7e7fa705e860362f9aa902df9ad80465b33d50/Lyrics/beaunus_Add%20markers%20for%20lyrics%20in%20selected%20items.lua</source>
       </version>
     </reapack>
   </category>
