@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Beaunus Scripts" commit="f885919ae8cd61afc1489f832c9e6ad0b6123f6c">
+<index version="1" name="Beaunus Scripts" commit="7c553bb78decbde2f5b10fbbd74508693f64c040">
   <category name="JSFX">
     <reapack name="beaunus_Gravity.jsfx" type="effect">
       <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
         <changelog><![CDATA[+ Initial Release]]></changelog>
         <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Gravity.jsfx</source>
-      </version>
-    </reapack>
-    <reapack name="beaunus_Library.jsfx" type="effect">
-      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
-        <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Library.jsfx</source>
       </version>
     </reapack>
     <reapack name="beaunus_Offset.jsfx" type="effect">
