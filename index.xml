@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Beaunus Scripts" commit="c794fed84b4f43dfc0148479719090fe035f7019">
+<index version="1" name="Beaunus Scripts" commit="c1de5fe77368ab155a0107d840a41ccd435b138f">
+  <category name="JSFX">
+    <reapack name="beaunus_Gravity.jsfx" type="effect">
+      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Gravity.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="beaunus_Library.jsfx" type="effect">
+      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Library.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="beaunus_Offset.jsfx" type="effect">
+      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Offset.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="beaunus_Rectify.jsfx" type="effect">
+      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_Rectify.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="beaunus_WaveShaper.jsfx" type="effect">
+      <version name="1.0" author="beaunus" time="2017-01-01T08:59:45Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/c1de5fe77368ab155a0107d840a41ccd435b138f/JSFX/beaunus_WaveShaper.jsfx</source>
+      </version>
+    </reapack>
+  </category>
   <category name="Lyrics">
     <reapack name="beaunus_Add markers for lyrics in selected items.lua" type="script">
       <version name="1.0" author="beaunus" time="2017-01-01T08:00:09Z">
