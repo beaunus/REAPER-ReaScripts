@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Beaunus Scripts" commit="e00c180ac83b6531b8578143f30f4f741fb146e4">
-  <category name="JSFX/MIDI">
-    <reapack name="beaunus-Test.jsfx" type="effect">
-      <version name="1.0" author="beaunus" time="2017-01-01T05:28:12Z">
-        <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/e00c180ac83b6531b8578143f30f4f741fb146e4/JSFX/MIDI/beaunus-Test.jsfx</source>
-      </version>
-    </reapack>
-  </category>
-</index>
+<index version="1" name="Beaunus Scripts" commit="d95ca1fb9d8db880f331c854d63502df6c062078"/>
