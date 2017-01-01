@@ -22,7 +22,7 @@
     <reapack name="beaunus_Wave Shaper.jsfx" type="effect">
       <version name="1.0" author="beaunus" time="2017-01-01T09:03:47Z">
         <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/f2f74342f6080818d6536e2b313ee6ccb70c40fb/JSFX/beaunus_Wave%20Shaper.jsfx</source>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/f885919ae8cd61afc1489f832c9e6ad0b6123f6c/JSFX/beaunus_Wave%20Shaper.jsfx</source>
       </version>
     </reapack>
   </category>
