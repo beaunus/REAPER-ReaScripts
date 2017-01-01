@@ -1,6 +1,18 @@
-desc: beaunus: Wave Shaper
+/**
+ * JSFX Name: Wave Shaper
+ * Author: beaunus
+ * Licence: GPL v3
+ * REAPER: 5.0
+ * Version: 1.0
+ */
 
-import beaunus-jsfx/beaunus.library
+/**
+ * Changelog:
+ * v1.0 (2017-01-01)
+  + Initial Release
+ */
+
+import beaunus_Library
 
 slider1: 0 < -96, 96, .0001 > initial gain(dB)
 
@@ -71,15 +83,15 @@ clearAllMeters();
 
 @sample
 
-/* 
-Apply ititial gain, 
+/*
+Apply ititial gain,
 in order to drive into the saturation.
 */
 spl0 *= initialAmplitudeFactor;
 spl1 *= initialAmplitudeFactor;
 
 /*
-Bias signal for tube style processing 
+Bias signal for tube style processing
 (more even harmonics.
 */
 spl0 *= (1 - (bias));
@@ -88,12 +100,12 @@ spl0 += bias;
 spl1 += bias;
 
 /*
-samplePreProcessBuffer; 
-sampleIndex = 0; 
+samplePreProcessBuffer;
+sampleIndex = 0;
 while(sampleIndex < num_ch) (
-  samplePreProcessBuffer[sampleIndex] = spl(sampleIndex); 
-  sampleIndex +=1; 
-); 
+  samplePreProcessBuffer[sampleIndex] = spl(sampleIndex);
+  sampleIndex +=1;
+);
 */
 
 spl0BeforeProcessing = spl0;
@@ -197,7 +209,7 @@ slider62 = averageValue;
 sliderchange(slider62);
 
 /*
-Apply final make-up gain, 
+Apply final make-up gain,
 in order to compensate for the reduction in level.
 */
 spl0 *= finalAmplitudeFactor;
