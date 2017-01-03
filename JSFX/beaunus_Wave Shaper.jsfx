@@ -10,6 +10,8 @@
  * Changelog: v1.0 (2017-01-01) + Initial Release
  */
 
+// comment
+
 desc: Wave Shaper
 
 slider1: 0 < -96, 96, .0001 > initial gain(dB)
