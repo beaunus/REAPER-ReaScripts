@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="7767c4be581fc84ce51ab98c9650ffb652746080" name="Beaunus Scripts">
+<index version="1" commit="dbc8461dcf10b773c37726b2c20ec6a4b51e8a32" name="Beaunus Scripts">
   <category name="JSFX">
     <reapack name="beaunus_Gravity.jsfx" type="effect">
       <version name="1.0" author="beaunus" time="2017-01-03T01:12:30Z">
@@ -21,7 +21,7 @@
     </reapack>
     <reapack name="beaunus_Wave Shaper.jsfx" type="effect">
       <version name="1.0" author="beaunus" time="2017-01-03T01:12:30Z">
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/7767c4be581fc84ce51ab98c9650ffb652746080/JSFX/beaunus_Wave%20Shaper.jsfx</source>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/dbc8461dcf10b773c37726b2c20ec6a4b51e8a32/JSFX/beaunus_Wave%20Shaper.jsfx</source>
       </version>
     </reapack>
   </category>
