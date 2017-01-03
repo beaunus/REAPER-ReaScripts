@@ -1,0 +1,63 @@
+/**
+ * JSFX Name: Gravity
+ * Author: beaunus
+ * Licence: GPL v3
+ * REAPER: 5.0
+ * Version: 1.0
+ */
+
+/**
+ * Changelog:
+ * v1.0 (2017-01-01)
+  + Initial Release
+ */
+
+desc: Gravity
+
+slider1:0<-96,96,.0001>initial gain (dB)
+slider2:1<1,10000,1>samples
+
+slider64:0<-96,96,.0001>final gain (dB)
+
+@init
+@slider
+initialAmplitudeFactor=2^(slider1/6);
+numberOfSamplesToAverage = floor(slider2);
+
+finalAmplitudeFactor=2^(slider64/6);
+@block
+//pdc_delay = numberOfSamplesToAverage;
+//pdc_bot_ch=0; pdc_top_ch=2; // delays the first two channels (spl0/spl1).
+
+
+@sample
+/*
+Apply ititial gain,
+in order to drive into the saturation.
+*/
+spl0*=initialAmplitudeFactor;
+spl1*=initialAmplitudeFactor;
+
+arrayIndex = 0;
+sumOfSpl0Values = spl0;
+sumOfSpl1Values = spl1;
+while(arrayIndex+1 < numberOfSamplesToAverage)(
+  sumOfSpl0Values += spl0Array[arrayIndex];
+  sumOfSpl1Values += spl1Array[arrayIndex];
+  spl0Array[arrayIndex] = spl0Array[arrayIndex + 1];
+  spl1Array[arrayIndex] = spl1Array[arrayIndex + 1];
+  arrayIndex += 1;
+  );
+spl0Array[arrayIndex] = spl0;
+spl1Array[arrayIndex] = spl1;
+
+spl0 = sumOfSpl0Values / numberOfSamplesToAverage;
+spl1 = sumOfSpl1Values / numberOfSamplesToAverage;
+
+/*
+Apply final make-up gain,
+in order to compensate for the reduction in level.
+*/
+spl0*=finalAmplitudeFactor;
+spl1*=finalAmplitudeFactor;
+
