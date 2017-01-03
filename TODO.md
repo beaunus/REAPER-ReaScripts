@@ -48,6 +48,9 @@ For example:
 
 1. Export the _specification_ sheet into _performance sequences_ for each
 performer.
+
+https://docs.google.com/spreadsheets/d/1FlhfMCX0HRUWVk8Or2GJZTPwxc_uaci3KM-0VbspnIY/edit#gid=0
+
 2. If the _performance sequence_ is simple enough to manually trim each clip,
 simply record the clips without a lyrics track.
 3. If you want to automated the trimming process:
