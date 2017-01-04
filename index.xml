@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="ecea438f52561bc1ce964372674a56b0620079d8" name="Beaunus Scripts">
+<index version="1" commit="a4e467dd7e239d0e6c963313470625b25c12e7bd" name="Beaunus Scripts">
+  <category name="Items">
+    <reapack name="beaunus_Name item takes by last marker to cut item.lua" type="script">
+      <version name="1.0" author="beaunus" time="2017-01-04T07:30:38Z">
+        <changelog><![CDATA[+ Initial Release]]></changelog>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/a4e467dd7e239d0e6c963313470625b25c12e7bd/Items/beaunus_Name%20item%20takes%20by%20last%20marker%20to%20cut%20item.lua</source>
+      </version>
+    </reapack>
+  </category>
   <category name="JSFX">
     <reapack name="beaunus_Gravity.jsfx" type="effect">
       <version name="1.0" author="beaunus" time="2017-01-03T01:12:30Z">
@@ -32,7 +40,7 @@
     <reapack name="beaunus_Add markers for lyrics in selected items.lua" type="script">
       <version name="1.0" author="beaunus" time="2017-01-03T01:12:30Z">
         <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/1b924fdb4e2f27a9f1635d4a4921cfb4b3a3ba1e/Lyrics/beaunus_Add%20markers%20for%20lyrics%20in%20selected%20items.lua</source>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/2badeb7c201daea1383775167db8513083b351de/Lyrics/beaunus_Add%20markers%20for%20lyrics%20in%20selected%20items.lua</source>
       </version>
     </reapack>
   </category>
