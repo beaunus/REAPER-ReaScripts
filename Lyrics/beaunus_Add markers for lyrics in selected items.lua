@@ -14,7 +14,6 @@
 
 -- Count the number of selected items.
 num_selected_items = reaper.CountSelectedMediaItems()
-reaper.ClearConsole()
 
 -- Iterate through all selected items.
 for i = 0, num_selected_items - 1 do
