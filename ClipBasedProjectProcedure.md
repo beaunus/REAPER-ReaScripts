@@ -82,7 +82,11 @@ For example:
 
 ## Export available clips and lengths
 
-1. Run a script to update the specification with the lengths of the clips.
+1. Generate a CSV file with all the clips lengths.
+<br />`python wave_file.py generate_csv_of_waves [folder] [csv file name]`
+1. Import the CSV into the Google Sheet.
+1. Lookup the lengths with the following formula:
+<br />`=VLOOKUP(CONCATENATE([label], ".wav"),index!A:C,3)`
 
 ## Define silences
 
