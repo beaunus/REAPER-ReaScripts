@@ -1,6 +1,4 @@
-# beaunus README
-
-## Clip based project plan
+### Clip based project procedure
 
 A clip based project has a few major phases:
 
@@ -8,7 +6,7 @@ A clip based project has a few major phases:
 2. Record the clips.
 3. Compile the clips into tracks and discs.
 
-### Define the _performance specification_
+## Define the _performance specification_
 
 Use a Google Sheet to define the discs and tracks.
 Relevant information includes:
@@ -44,7 +42,7 @@ For example:
 | 1    | 1      | 1        | Instruction2B | Welcome to our CD! | Joe       |
 | 1    | 1      | 2        | Word1         |                    | Joe       |
 
-### Record the clips
+## Record the clips
 
 1. Export the _specification_ sheet into _performance sequences_ for each
 performer.
@@ -59,35 +57,39 @@ simply record the clips without a lyrics track.
     2. Set a reasonable tempo.
     3. Record the clips in order.
 
-### Trim and save the clips
+## Trim and save the clips
 
 Performances should be __loudness normalized__ to -23LUFS.
 
 If you have used a lyrics track:
 
 1. Convert the lyrics to markers.
-2. Split the performance at the markers.
-3. Trim silence at the beginnings and ends of clips.
-4. Name and save clips.
+1. Split the performance using dynamic split.
+1. Trim silence at the beginnings and ends of clips.
+1. beaunus_Name item takes by last marker to cut item.lua
+1. SWS: Create regions from selected items (name by active take)
+1. Render regions.
 
 Finished clips should be named according to the following convention:
 
-`[label]-[performer]-[creation_datetime]-[version].[file extension]`
+`[label]-[performer]-[creation_datetime].[file extension]`
+
+`$region-$track-$year$month$dayT$hour$minute$second`
 
 For example:
 
 `Instruction5B-Tom-20170103T070418Z-01.wav`
 
-### Export available clips and lengths
+## Export available clips and lengths
 
 1. Run a script to update the specification with the lengths of the clips.
 
-### Define silences
+## Define silences
 
 Once all the clips have been recorded, the lengths of each clip will be known.
 At this point, you can define silences, since the final disc length can be
 calculated.
 
-### Compile the clips
+## Compile the clips
 
 1. Import the fully specified project into REAPER.
