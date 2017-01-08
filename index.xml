@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="97618a98ef99e6629ef1b6c80470dea95766d163" name="Beaunus Scripts">
+<index version="1" commit="f6f8b966bb40490d37ffa03ff4d66caaa8e14387" name="Beaunus Scripts">
   <category name="Clip Splicer">
     <reapack name="beaunus_Import reaper-clip-splicer JSON.py" type="script">
       <version name="1.0" author="beaunus" time="2017-01-08T06:36:30Z">
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/97618a98ef99e6629ef1b6c80470dea95766d163/Clip%20Splicer/beaunus_Import%20reaper-clip-splicer%20JSON.py</source>
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/f6f8b966bb40490d37ffa03ff4d66caaa8e14387/Clip%20Splicer/beaunus_Import%20reaper-clip-splicer%20JSON.py</source>
       </version>
     </reapack>
   </category>
