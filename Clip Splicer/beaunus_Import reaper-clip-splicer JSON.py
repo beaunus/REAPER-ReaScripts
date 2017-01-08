@@ -10,6 +10,8 @@ v1.0 (2017-01-01)
   + Initial Release
 """
 
-f = open('~/Desktop/reapertest.txt', 'w')
+from os.path import expanduser
+
+f = open(expanduser("~") + '/Desktop/reapertest.txt', 'w')
 
 f.write("yo yo")
