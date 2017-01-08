@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="a4e467dd7e239d0e6c963313470625b25c12e7bd" name="Beaunus Scripts">
+<index version="1" commit="97618a98ef99e6629ef1b6c80470dea95766d163" name="Beaunus Scripts">
+  <category name="Clip Splicer">
+    <reapack name="beaunus_Import reaper-clip-splicer JSON.py" type="script">
+      <version name="1.0" author="beaunus" time="2017-01-08T06:36:30Z">
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/97618a98ef99e6629ef1b6c80470dea95766d163/Clip%20Splicer/beaunus_Import%20reaper-clip-splicer%20JSON.py</source>
+      </version>
+    </reapack>
+  </category>
   <category name="Items">
     <reapack name="beaunus_Name item takes by last marker to cut item.lua" type="script">
       <version name="1.0" author="beaunus" time="2017-01-04T07:30:38Z">
