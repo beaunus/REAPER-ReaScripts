@@ -83,7 +83,7 @@ def add_pause(component, cur_position, track_objects, pause_lengths):
   new_item = RPR_AddMediaItemToTrack(pause_track)
 
   # Determine the length of the pause.
-  if (pause_lengths is not None and component in pause_lengths):
+  if pause_lengths is not None and component in pause_lengths:
     RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", pause_lengths[component])
   else:
     RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", 1)
@@ -206,7 +206,7 @@ if __name__ == "__main__":
   (retval, filenameNeed4096, title, defext) = \
   RPR_GetUserFileNameForRead(None, None, ".json")
 
-  if(filenameNeed4096 != 'None'):
+  if filenameNeed4096 != 'None':
 
     # Open the file and load it into an dictionary object.
 
@@ -223,10 +223,10 @@ if __name__ == "__main__":
 
     # Create a FAKE index of pause lengths
     pause_lengths = {
-      "_PAUSE_AFTER_COMPONENT": 2,
-      "_PAUSE_AFTER_PAGE_NUMBER": 3,
-      "_PAUSE_AFTER_WORD":4
-      }
+        "_PAUSE_AFTER_COMPONENT": 2,
+        "_PAUSE_AFTER_PAGE_NUMBER": 3,
+        "_PAUSE_AFTER_WORD":4
+        }
 
     # Iterate over each disc
     for disc_name, disc_val in specification.iteritems():
