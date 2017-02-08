@@ -100,7 +100,7 @@ def add_pause(component, cur_position, track_objects, pause_lengths):
   cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
   return (cur_position, track_objects, new_item)
 
-def add_repeat(component, cur_position, track_objects, prev_item):
+def add_repeat(cur_position, track_objects, prev_item):
   """Adds a repeat specified by the given component to the session.
 
   Args:
@@ -142,7 +142,21 @@ def add_repeat(component, cur_position, track_objects, prev_item):
 
   return (cur_position, track_objects, new_item)
 
-def add_clip(component, cur_position, track_objects, prev_item):
+def add_clip(component, cur_position, track_objects):
+  """Adds the specified clip to the session.
+
+  Args:
+    component: The JSON representation of the clip.
+    cur_position: The starting position of the component.
+    track_objects: The array of REAPER track objects in which to add components.
+
+  Returns:
+    A tuple containing:
+      cur_position: The new cursor position, after adding the component.
+      track_objects: The array of RPR_MediaTracks,
+        since it may have been modified.
+      new_item: The new RPR_MediaItem that represents the newly added component.
+  """
   # Determine the performer of the clip.
   performer = get_performer(component)
 
@@ -193,15 +207,15 @@ def add_component(component, cur_position, track_objects, pause_lengths, \
   # to represent it.
   elif component == "_REPEAT_PREVIOUS_WORD":
     (cur_position, track_objects, new_item) = \
-    add_repeat(component, cur_position, track_objects, prev_item)
+    add_repeat(cur_position, track_objects, prev_item)
   # Otherwise, add the performed clip to the session.
   else:
     (cur_position, track_objects, new_item) = \
-    add_clip(component, cur_position, track_objects, prev_item)
+    add_clip(component, cur_position, track_objects
+             )
   return (cur_position, track_objects, new_item)
 
-if __name__ == "__main__":
-
+def main():
   # Prompt the user for the JSON file that describes the disc layout
   (retval, filenameNeed4096, title, defext) = \
   RPR_GetUserFileNameForRead(None, None, ".json")
@@ -239,3 +253,6 @@ if __name__ == "__main__":
             (cur_position, track_objects, prev_item) = \
             add_component(component, cur_position, track_objects, \
                           pause_lengths, prev_item)
+
+if __name__ == "__main__":
+  main()
