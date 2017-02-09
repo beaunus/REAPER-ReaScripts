@@ -11,8 +11,9 @@ v1.0 (2017-01-01)
 """
 
 import json
-import os
+# import os
 
+# pylint: disable=undefined-variable
 
 def get_track(track_id, track_objects):
   """Returns the track object with the specified id.
@@ -211,24 +212,24 @@ def add_component(component, cur_position, track_objects, pause_lengths, \
   # Otherwise, add the performed clip to the session.
   else:
     (cur_position, track_objects, new_item) = \
-    add_clip(component, cur_position, track_objects
-             )
+    add_clip(component, cur_position, track_objects)
   return (cur_position, track_objects, new_item)
 
 def main():
+  """Execute the script.
+  """
   # Prompt the user for the JSON file that describes the disc layout
-  (retval, filenameNeed4096, title, defext) = \
-  RPR_GetUserFileNameForRead(None, None, ".json")
+  filename = RPR_GetUserFileNameForRead(None, None, ".json")[1]
 
-  if filenameNeed4096 != 'None':
+  if filename != 'None':
 
     # Open the file and load it into an dictionary object.
 
-    f = open(filenameNeed4096, 'r')
-    folder = os.path.dirname(filenameNeed4096)
+    file = open(filename, 'r')
+#     folder = os.path.dirname(filename)
 
     # Parse the JSON file into an object
-    specification = json.loads(f.read())
+    specification = json.loads(file.read())
 
     cur_position = RPR_GetCursorPosition()
 
@@ -243,6 +244,7 @@ def main():
         }
 
     # Iterate over each disc
+    # pylint: disable=unused-variable
     for disc_name, disc_val in specification.iteritems():
       # Iterate over each track
       for track in disc_val:
