@@ -11,7 +11,7 @@ v1.0 (2017-01-01)
 """
 
 import json
-# import os
+import os
 
 # pylint: disable=undefined-variable
 
@@ -143,7 +143,7 @@ def add_repeat(cur_position, track_objects, prev_item):
 
   return (cur_position, track_objects, new_item)
 
-def add_clip(component, cur_position, track_objects):
+def add_clip(component, cur_position, track_objects, folder):
   """Adds the specified clip to the session.
 
   Args:
@@ -165,8 +165,12 @@ def add_clip(component, cur_position, track_objects):
   (track, track_objects) = get_track(performer, track_objects)
   new_item = RPR_AddMediaItemToTrack(track)
 
+  clip_length = 1
+  # Determine if the specified file exists.
+  #   filename = folder + "/clips/" + component + ".wav"
+
   # Set the length and position of the new RPR_MediaItem
-  RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", 1)
+  RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", clip_length)
   RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
 
   # Add a RPR_Take to the new media item.
@@ -182,7 +186,7 @@ def add_clip(component, cur_position, track_objects):
   return (cur_position, track_objects, new_item)
 
 def add_component(component, cur_position, track_objects, pause_lengths, \
-                  prev_item):
+                  prev_item, folder):
   """Adds the specified component to the session.
 
   Args:
@@ -192,6 +196,7 @@ def add_component(component, cur_position, track_objects, pause_lengths, \
     pause_lengths: The dictionary of pause lengths for this specification.
     prev_item: The previous RPR_MediaItem.
       This is used for "REPEAT_PREVIOUS_WORD" components.
+    folder: The folder that contains the JSON file.
 
   Returns:
     A tuple containing:
@@ -212,7 +217,7 @@ def add_component(component, cur_position, track_objects, pause_lengths, \
   # Otherwise, add the performed clip to the session.
   else:
     (cur_position, track_objects, new_item) = \
-    add_clip(component, cur_position, track_objects)
+    add_clip(component, cur_position, track_objects, folder)
   return (cur_position, track_objects, new_item)
 
 def main():
@@ -226,22 +231,40 @@ def main():
     # Open the file and load it into an dictionary object.
 
     file = open(filename, 'r')
-#     folder = os.path.dirname(filename)
+    folder = os.path.dirname(filename)
 
     # Parse the JSON file into an object
     specification = json.loads(file.read())
 
     cur_position = RPR_GetCursorPosition()
 
-    # Create an index of tracks to be used throughout the process
+    # Create a few dictionaries to be used throughout the process
     track_objects = dict()
+    pause_lengths = dict()
 
-    # Create a FAKE index of pause lengths
-    pause_lengths = {
-        "_PAUSE_AFTER_COMPONENT": 2,
-        "_PAUSE_AFTER_PAGE_NUMBER": 3,
-        "_PAUSE_AFTER_WORD":4
-        }
+    # Determine pauses that need to be specified
+    # Iterate over each disc
+    # pylint: disable=unused-variable
+    for disc_name, disc_val in specification.iteritems():
+      # Iterate over each track
+      for track in disc_val:
+        prev_item = None
+        # Iterate over each component
+        if track is not None:
+          for component in track:
+            if component.startswith("_PAUSE"):
+              if component not in pause_lengths:
+                pause_lengths[component] = None
+
+    # Prompt user for pause lengths
+    user_lengths = RPR_GetUserInputs("Specify Pauses",
+                                     len(pause_lengths),
+                                     ','.join(pause_lengths.iterkeys()),
+                                     "0,0,0,0,0,0,0", 99)[4].split(",")
+    i = 0
+    for pause_name in pause_lengths.iterkeys():
+      pause_lengths[pause_name] = int(user_lengths[i])
+      i += 1
 
     # Iterate over each disc
     # pylint: disable=unused-variable
@@ -254,7 +277,7 @@ def main():
           for component in track:
             (cur_position, track_objects, prev_item) = \
             add_component(component, cur_position, track_objects, \
-                          pause_lengths, prev_item)
+                          pause_lengths, prev_item, folder)
 
 if __name__ == "__main__":
   main()
