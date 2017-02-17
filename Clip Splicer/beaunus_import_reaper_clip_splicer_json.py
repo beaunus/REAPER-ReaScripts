@@ -12,6 +12,7 @@ v1.0 (2017-01-01)
 
 import json
 import os
+import time
 
 # pylint: disable=undefined-variable
 
@@ -165,19 +166,25 @@ def add_clip(component, cur_position, track_objects, folder):
   (track, track_objects) = get_track(performer, track_objects)
   new_item = RPR_AddMediaItemToTrack(track)
 
-  clip_length = 1
   # Determine if the specified file exists.
-  #   filename = folder + "/clips/" + component + ".wav"
+  filename = folder + "/clips/" + component + ".wav"
+  file_exists = RPR_file_exists(filename)
+  if file_exists:
+    # Select the proper track.
+    RPR_SetTrackSelected(track, True)
+    # Insert the media
+    RPR_InsertMedia(filename, 0)
+    cur_position = RPR_GetCursorPosition()
+  else:
+    # Set the length and position of the new RPR_MediaItem
+    RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", 1)
+    RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
 
-  # Set the length and position of the new RPR_MediaItem
-  RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", clip_length)
-  RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
+    # Add a RPR_Take to the new media item.
+    RPR_AddTakeToMediaItem(new_item)
 
-  # Add a RPR_Take to the new media item.
-  RPR_AddTakeToMediaItem(new_item)
-
-  # Increment the cur_position.
-  cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
+    # Increment the cur_position.
+    cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
 
   # Name the take according to the component.
   this_take = RPR_GetActiveTake(new_item)
@@ -278,6 +285,7 @@ def main():
             (cur_position, track_objects, prev_item) = \
             add_component(component, cur_position, track_objects, \
                           pause_lengths, prev_item, folder)
+            RPR_SetEditCurPos(cur_position, False, False)
 
 if __name__ == "__main__":
   main()
