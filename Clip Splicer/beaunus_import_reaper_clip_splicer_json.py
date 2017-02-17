@@ -190,6 +190,7 @@ def add_clip(component, cur_position, track_objects, folder, \
     # Insert the media
     RPR_InsertMedia(filename, 0)
     cur_position = RPR_GetCursorPosition()
+    new_item = RPR_GetSelectedMediaItem(0, RPR_CountSelectedMediaItems(0)-1)
   else:
     unavailable_files.add(component + "\n")
     # Set the length and position of the new RPR_MediaItem
