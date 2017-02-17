@@ -16,6 +16,14 @@ import os
 import string
 import time
 
+"""
+TODO:
+pylint
+doc strings
+add markers and regions
+consolidate redundant code
+deal with parameter hell (global variables)
+"""
 
 # pylint: disable=undefined-variable
 def get_track(track_id, track_objects):
