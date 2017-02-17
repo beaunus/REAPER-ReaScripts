@@ -10,12 +10,14 @@ v1.0 (2017-01-01)
   + Initial Release
 """
 
+import datetime
 import json
 import os
+import string
 import time
 
-# pylint: disable=undefined-variable
 
+# pylint: disable=undefined-variable
 def get_track(track_id, track_objects):
   """Returns the track object with the specified id.
 
@@ -144,7 +146,11 @@ def add_repeat(cur_position, track_objects, prev_item):
 
   return (cur_position, track_objects, new_item)
 
-def add_clip(component, cur_position, track_objects, folder):
+def component_key(component):
+  return component[string.find(component, "[", 0):string.find(component, "]")] + component[:string.find(component, "[")]
+
+def add_clip(component, cur_position, track_objects, folder, \
+             available_files, unavailable_files):
   """Adds the specified clip to the session.
 
   Args:
@@ -170,12 +176,14 @@ def add_clip(component, cur_position, track_objects, folder):
   filename = folder + "/clips/" + component + ".wav"
   file_exists = RPR_file_exists(filename)
   if file_exists:
+    available_files.add(component + "\n")
     # Select the proper track.
-    RPR_SetTrackSelected(track, True)
+    RPR_SetOnlyTrackSelected(track)
     # Insert the media
     RPR_InsertMedia(filename, 0)
     cur_position = RPR_GetCursorPosition()
   else:
+    unavailable_files.add(component + "\n")
     # Set the length and position of the new RPR_MediaItem
     RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", 1)
     RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
@@ -193,7 +201,7 @@ def add_clip(component, cur_position, track_objects, folder):
   return (cur_position, track_objects, new_item)
 
 def add_component(component, cur_position, track_objects, pause_lengths, \
-                  prev_item, folder):
+                  prev_item, folder, available_files, unavailable_files):
   """Adds the specified component to the session.
 
   Args:
@@ -224,7 +232,8 @@ def add_component(component, cur_position, track_objects, pause_lengths, \
   # Otherwise, add the performed clip to the session.
   else:
     (cur_position, track_objects, new_item) = \
-    add_clip(component, cur_position, track_objects, folder)
+    add_clip(component, cur_position, track_objects, folder, \
+             available_files, unavailable_files)
   return (cur_position, track_objects, new_item)
 
 def main():
@@ -248,6 +257,8 @@ def main():
     # Create a few dictionaries to be used throughout the process
     track_objects = dict()
     pause_lengths = dict()
+    available_files = set()
+    unavailable_files = set()
 
     # Determine pauses that need to be specified
     # Iterate over each disc
@@ -284,8 +295,22 @@ def main():
           for component in track:
             (cur_position, track_objects, prev_item) = \
             add_component(component, cur_position, track_objects, \
-                          pause_lengths, prev_item, folder)
+                          pause_lengths, prev_item, folder, \
+                          available_files, unavailable_files)
             RPR_SetEditCurPos(cur_position, False, False)
+
+    # Export the report of available and unavailable files
+    now = str(datetime.datetime.now())
+    report_file = open(folder + "/reaper_clip_splicer_report-" + now + ".txt", "w")
+    report_file.write("beaunus REAPER Clip Splicer Report\n")
+    report_file.write(now + "\n\n")
+
+    report_file.write("Available components" + "\n")
+    report_file.writelines(sorted(available_files, key=component_key))
+    report_file.write("\n")
+    report_file.write("Unavailable components" + "\n")
+    report_file.writelines(sorted(unavailable_files, key=component_key))
+
 
 if __name__ == "__main__":
   main()
