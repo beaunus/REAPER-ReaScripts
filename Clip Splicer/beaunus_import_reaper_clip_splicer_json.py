@@ -10,12 +10,6 @@ v1.0 (2017-01-01)
     + Initial Release
 """
 
-import datetime
-import json
-import os
-import string
-import time
-
 """
 TODO:
 pylint
@@ -23,8 +17,13 @@ doc strings
 add markers and regions
 consolidate redundant code
 """
-
 # pylint: disable=undefined-variable
+import datetime
+import itertools
+import json
+import os
+import string
+import time
 
 
 def get_performer(component_string):
@@ -86,11 +85,15 @@ class reaper_clip_splicer:
                                 self.pause_lengths[component] = None
 
         # Prompt user for pause lengths
+        num_pauses = len(self.pause_lengths)
+        captions_csv = ','.join(self.pause_lengths.iterkeys())
+        retvals_csv = ','.join(list(["1"] * num_pauses))
+
         user_lengths = RPR_GetUserInputs("Specify Pauses",
-                                         len(self.pause_lengths),
-                                         ','.join(
-                                             self.pause_lengths.iterkeys()),
-                                         "1,1,1,1,1,1,1", 99)[4].split(",")
+                                         num_pauses,
+                                         captions_csv,
+                                         retvals_csv,
+                                         99)[4].split(",")
         i = 0
         for pause_name in self.pause_lengths.iterkeys():
             self.pause_lengths[pause_name] = int(user_lengths[i])
@@ -316,7 +319,8 @@ class reaper_clip_splicer:
         report_file.writelines(sorted(self.available_files, key=component_key))
         report_file.write("\n")
         report_file.write("Unavailable components" + "\n")
-        report_file.writelines(sorted(self.unavailable_files, key=component_key))
+        report_file.writelines(
+            sorted(self.unavailable_files, key=component_key))
 
 
 def main():
