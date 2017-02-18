@@ -10,20 +10,16 @@ v1.0 (2017-01-01)
     + Initial Release
 """
 
-"""
-TODO:
-pylint
-doc strings
-add markers and regions
-consolidate redundant code
-"""
-# pylint: disable=undefined-variable
 import datetime
-import itertools
 import json
 import os
-import string
-import time
+
+# pylint: disable=pointless-string-statement
+"""
+TODO:
+add markers and regions
+"""
+# pylint: disable=undefined-variable
 
 
 def get_performer(component_string):
@@ -31,7 +27,7 @@ def get_performer(component_string):
 
     Args:
         component_string: The JSON representation of the component.
-                          For example: "Apple [Beau]"
+                For example: "Apple [Beau]"
     Returns:
         The performer of the component. For example: "Beau"
     """
@@ -42,24 +38,34 @@ def get_performer(component_string):
 
 
 def component_key(component_string):
+    """Returns a key for a component string.
+
+    The key is the performer's name, followed by the component string itself.
+    """
     return get_performer(component_string) + component_string
 
 
-class reaper_clip_splicer:
+class ReaperClipSplicer:
     """A class to represent a REAPER clip splicer project.
+
+    Clips are searched for in the "clips" folder, relative to the location of
+    the selected .json file.
+
+    Reports are generated in the same folder as the selected .json file.
 
     Attributes:
         media_tracks: REAPER MediaTracks to be used for components.
-                      Indexed by performer name.
+                Indexed by performer name.
         pause_lengths: Times to pause between certain component types.
-                       Indexed by pause_length name.
+                Indexed by pause_length name.
         discs: Disc specifications.  Indexed by disc name.
         available_files: Files that correspond to specified components.
         unavailable_files: Files that are unavailable for the project.
+        folder: The folder in which the JSON file is found.
     """
 
     def __init__(self, specification, folder):
-        """Initializes a new reaper_clip_splicer project.
+        """Initializes a new ReaperClipSplicer project.
         """
         self.media_tracks = dict()
         self.pause_lengths = dict()
@@ -71,10 +77,11 @@ class reaper_clip_splicer:
         self.initialize_pause_lengths()
 
     def initialize_pause_lengths(self):
-        # Determine pauses that need to be specified
+        """Determine pauses that need to be specified/
+        """
         # Iterate over each disc
-        # pylint: disable=unused-variable
-        for disc_name, disc_val in self.discs.iteritems():
+        # pylint: disable=too-many-nested-blocks
+        for disc_val in self.discs.values():
             # Iterate over each track
             for track in disc_val:
                 # Iterate over each component
@@ -86,7 +93,7 @@ class reaper_clip_splicer:
 
         # Prompt user for pause lengths
         num_pauses = len(self.pause_lengths)
-        captions_csv = ','.join(self.pause_lengths.iterkeys())
+        captions_csv = ','.join(self.pause_lengths.keys())
         retvals_csv = ','.join(list(["1"] * num_pauses))
 
         user_lengths = RPR_GetUserInputs("Specify Pauses",
@@ -95,7 +102,7 @@ class reaper_clip_splicer:
                                          retvals_csv,
                                          99)[4].split(",")
         i = 0
-        for pause_name in self.pause_lengths.iterkeys():
+        for pause_name in self.pause_lengths:
             self.pause_lengths[pause_name] = int(user_lengths[i])
             i += 1
 
@@ -103,7 +110,8 @@ class reaper_clip_splicer:
         """Returns the track object with the specified id.
 
         If the track_objects array doesn't already contain the specified track,
-        add a new track with the given track_id and add it to the track_objects array.
+        add a new track with the given track_id and add it to the track_objects
+        array.
         Otherwise, simply return the track object.
 
         Args:
@@ -131,17 +139,19 @@ class reaper_clip_splicer:
             RPR_UpdateTimeline()
         return self.media_tracks[track_id]
 
-    def add_pause(self, component, cur_position):
+    def add_pause(self, component, cursor_position):
         """Add the pause specified in the given component to the session.
 
         Args:
             component: The JSON representation of the component.
-            cur_position: The starting position of the component.
+            cursor_position: The starting position of the component.
 
         Returns:
             A tuple containing the following:
-                cur_position: The new cursor position, after adding the component.
-                new_item: The new REAPER MediaItem that represents the newly added component.
+                cursor_position: The new cursor position, after adding
+                        the component.
+                new_item: The new REAPER MediaItem that represents the newly
+                        added component.
         """
         # Get the REAPER MediaTrack for pauses.
         pause_track = self.get_track("_PAUSE")
@@ -159,27 +169,29 @@ class reaper_clip_splicer:
         # Put the newly created pause in place,
         # add it to a new take on the pause track,
         # and name it according to the component specification.
-        RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
+        RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cursor_position)
         RPR_AddTakeToMediaItem(new_item)
         this_take = RPR_GetActiveTake(new_item)
         RPR_GetSetMediaItemTakeInfo_String(
             this_take, "P_NAME", component, True)
 
         # Increment the cursor_position and return
-        cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
-        return (cur_position, new_item)
+        cursor_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
+        return (cursor_position, new_item)
 
-    def add_repeat(self, cur_position, prev_item):
+    def add_repeat(self, cursor_position, prev_item):
         """Adds a repeat specified by the given component to the session.
 
         Args:
-            cur_position: The starting position of the component.
+            cursor_position: The starting position of the component.
             prev_item: The previous REAPER MediaItem.
 
         Returns:
             A tuple containing:
-                cur_position: The new cursor position, after adding the component.
-                new_item: The new RPR_MediaItem that represents the newly added component.
+                cursor_position: The new cursor position, after adding the
+                        component.
+                new_item: The new RPR_MediaItem that represents the newly added
+                        component.
         """
         # Get the RPR_MediaTrack for repeats.
         repeat_track = self.get_track("_REPEAT")
@@ -194,7 +206,7 @@ class reaper_clip_splicer:
                                                "P_NAME", None, False)[3]
         # Set the repeat item's attributes and add a new take.
         RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", prev_item_length)
-        RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
+        RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cursor_position)
         RPR_SetMediaItemInfo_Value(new_item, "B_MUTE", True)
         RPR_AddTakeToMediaItem(new_item)
 
@@ -204,27 +216,29 @@ class reaper_clip_splicer:
         prev_source = RPR_GetMediaItemTake_Source(prev_take)
         RPR_SetMediaItemTake_Source(this_take, prev_source)
 
-        # Increment the cur_position.
-        cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
+        # Increment the cursor_position.
+        cursor_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
 
         # Get the newly created take and name it accordingly.
         this_take = RPR_GetActiveTake(new_item)
         RPR_GetSetMediaItemTakeInfo_String(
             this_take, "P_NAME", prev_item_name, True)
 
-        return (cur_position, new_item)
+        return (cursor_position, new_item)
 
-    def add_clip(self, component, cur_position):
+    def add_clip(self, component, cursor_position):
         """Adds the specified clip to the session.
 
         Args:
             component: The JSON representation of the clip.
-            cur_position: The starting position of the component.
+            cursor_position: The starting position of the component.
 
         Returns:
             A tuple containing:
-                cur_position: The new cursor position, after adding the component.
-                new_item: The new REAPER MediaItem that represents the newly added component.
+                cursor_position: The new cursor position, after adding the
+                        component.
+                new_item: The new REAPER MediaItem that represents the newly
+                        added component.
         """
         # Determine the performer of the clip.
         performer = get_performer(component)
@@ -242,29 +256,35 @@ class reaper_clip_splicer:
             RPR_SetOnlyTrackSelected(track)
             # Insert the media
             RPR_InsertMedia(filename, 0)
-            cur_position = RPR_GetCursorPosition()
+            cursor_position = RPR_GetCursorPosition()
             new_item = RPR_GetSelectedMediaItem(
                 0, RPR_CountSelectedMediaItems(0) - 1)
         else:
             self.unavailable_files.add(component + "\n")
             # Set the length and position of the new RPR_MediaItem
             RPR_SetMediaItemInfo_Value(new_item, "D_LENGTH", 1)
-            RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
+            RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cursor_position)
 
             # Add a RPR_Take to the new media item.
             RPR_AddTakeToMediaItem(new_item)
 
-            # Increment the cur_position.
-            cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
+            # Increment the cursor_position.
+            cursor_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
 
         # Name the take according to the component.
         this_take = RPR_GetActiveTake(new_item)
         RPR_GetSetMediaItemTakeInfo_String(
             this_take, "P_NAME", component, True)
 
-        return (cur_position, new_item)
+        return (cursor_position, new_item)
 
     def render_components(self, cursor_position):
+        """Render the components of the specified discs into the active REAPER
+        project.
+
+        Args:
+            cursor_position: The starting position of the rendering.
+        """
         # Iterate over each disc
         # pylint: disable=unused-variable
         for disc_name, disc_val in self.discs.iteritems():
@@ -279,30 +299,34 @@ class reaper_clip_splicer:
                                 component, cursor_position, prev_item)
                         RPR_SetEditCurPos(cursor_position, False, False)
 
-    def add_component(self, component, cur_position, prev_item):
+    def add_component(self, component, cursor_position, prev_item):
         """Adds the specified component to the session.
 
         Args:
             component: The JSON representation of the component.
-            cur_position: The starting position of the component.
+            cursor_position: The starting position of the component.
 
         Returns:
             A tuple containing:
-                cur_position: The new cursor position, after adding the component.
-                new_item: The new REAPER MediaItem that represents the newly added component.
+                cursor_position: The new cursor position, after adding the
+                    component.
+                new_item: The new REAPER MediaItem that represents the newly
+                    added component.
         """
         # If this component is a _PAUSE, add an empty item to represent it.
         if component.startswith("_PAUSE"):
-            (cur_position, new_item) = \
-                self.add_pause(component, cur_position)
+            (cursor_position, new_item) = \
+                self.add_pause(component, cursor_position)
         # If this component is a _REPEAT, add a muted copy of the previous item
         # to represent it.
         elif component == "_REPEAT_PREVIOUS_WORD":
-            (cur_position, new_item) = self.add_repeat(cur_position, prev_item)
+            (cursor_position, new_item) = self.add_repeat(
+                cursor_position, prev_item)
         # Otherwise, add the performed clip to the session.
         else:
-            (cur_position, new_item) = self.add_clip(component, cur_position)
-        return (cur_position, new_item)
+            (cursor_position, new_item) = self.add_clip(
+                component, cursor_position)
+        return (cursor_position, new_item)
 
     def generate_report(self):
         """Creates a file that reports the available and unavailable files
@@ -330,21 +354,17 @@ def main():
     filename = RPR_GetUserFileNameForRead(None, None, ".json")[1]
 
     if filename != None:
-
         # Open the file and load it into an dictionary object.
-
         file = open(filename, 'r')
         folder = os.path.dirname(filename)
 
         # Parse the JSON file into an object
         specification = json.loads(file.read())
 
-        my_reaper_clip_splicer = reaper_clip_splicer(specification, folder)
-
         cursor_position = RPR_GetCursorPosition()
 
+        my_reaper_clip_splicer = ReaperClipSplicer(specification, folder)
         my_reaper_clip_splicer.render_components(cursor_position)
-
         my_reaper_clip_splicer.generate_report()
 
 if __name__ == "__main__":
