@@ -22,12 +22,9 @@ pylint
 doc strings
 add markers and regions
 consolidate redundant code
-deal with parameter hell (global variables)
 """
 
 # pylint: disable=undefined-variable
-
-
 
 
 def get_performer(component_string):
@@ -44,8 +41,10 @@ def get_performer(component_string):
     performer = component_string[index_of_open + 1:index_of_close]
     return performer
 
+
 def component_key(component_string):
     return get_performer(component_string) + component_string
+
 
 class reaper_clip_splicer:
     """A class to represent a REAPER clip splicer project.
@@ -89,8 +88,9 @@ class reaper_clip_splicer:
         # Prompt user for pause lengths
         user_lengths = RPR_GetUserInputs("Specify Pauses",
                                          len(self.pause_lengths),
-                                         ','.join(self.pause_lengths.iterkeys()),
-                                         "0,0,0,0,0,0,0", 99)[4].split(",")
+                                         ','.join(
+                                             self.pause_lengths.iterkeys()),
+                                         "1,1,1,1,1,1,1", 99)[4].split(",")
         i = 0
         for pause_name in self.pause_lengths.iterkeys():
             self.pause_lengths[pause_name] = int(user_lengths[i])
@@ -120,7 +120,8 @@ class reaper_clip_splicer:
             self.media_tracks[track_id] = new_track
 
             # Name the track according to the track_id.
-            RPR_GetSetMediaTrackInfo_String(new_track, "P_NAME", track_id, True)
+            RPR_GetSetMediaTrackInfo_String(
+                new_track, "P_NAME", track_id, True)
 
             # Update the UI
             RPR_TrackList_AdjustWindows(True)
@@ -158,7 +159,8 @@ class reaper_clip_splicer:
         RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
         RPR_AddTakeToMediaItem(new_item)
         this_take = RPR_GetActiveTake(new_item)
-        RPR_GetSetMediaItemTakeInfo_String(this_take, "P_NAME", component, True)
+        RPR_GetSetMediaItemTakeInfo_String(
+            this_take, "P_NAME", component, True)
 
         # Increment the cursor_position and return
         cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
@@ -192,6 +194,12 @@ class reaper_clip_splicer:
         RPR_SetMediaItemInfo_Value(new_item, "D_POSITION", cur_position)
         RPR_SetMediaItemInfo_Value(new_item, "B_MUTE", True)
         RPR_AddTakeToMediaItem(new_item)
+
+        # Add the previous item's source to this one.
+        this_take = RPR_GetActiveTake(new_item)
+        prev_take = RPR_GetActiveTake(prev_item)
+        prev_source = RPR_GetMediaItemTake_Source(prev_take)
+        RPR_SetMediaItemTake_Source(this_take, prev_source)
 
         # Increment the cur_position.
         cur_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
@@ -248,7 +256,8 @@ class reaper_clip_splicer:
 
         # Name the take according to the component.
         this_take = RPR_GetActiveTake(new_item)
-        RPR_GetSetMediaItemTakeInfo_String(this_take, "P_NAME", component, True)
+        RPR_GetSetMediaItemTakeInfo_String(
+            this_take, "P_NAME", component, True)
 
         return (cur_position, new_item)
 
@@ -263,7 +272,8 @@ class reaper_clip_splicer:
                 if track is not None:
                     for component in track:
                         (cursor_position, prev_item) = \
-                            self.add_component(component, cursor_position, prev_item)
+                            self.add_component(
+                                component, cursor_position, prev_item)
                         RPR_SetEditCurPos(cursor_position, False, False)
 
     def add_component(self, component, cur_position, prev_item):
@@ -307,6 +317,7 @@ class reaper_clip_splicer:
         report_file.write("\n")
         report_file.write("Unavailable components" + "\n")
         report_file.writelines(sorted(unavailable_files, key=component_key))
+
 
 def main():
     """Execute the script.
