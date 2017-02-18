@@ -308,15 +308,15 @@ class reaper_clip_splicer:
         # Export the report of available and unavailable files
         now = str(datetime.datetime.now())
         report_file = open(
-            folder + "/reaper_clip_splicer_report-" + now + ".txt", "w")
+            self.folder + "/reaper_clip_splicer_report-" + now + ".txt", "w")
         report_file.write("beaunus REAPER Clip Splicer Report\n")
         report_file.write(now + "\n\n")
 
         report_file.write("Available components" + "\n")
-        report_file.writelines(sorted(available_files, key=component_key))
+        report_file.writelines(sorted(self.available_files, key=component_key))
         report_file.write("\n")
         report_file.write("Unavailable components" + "\n")
-        report_file.writelines(sorted(unavailable_files, key=component_key))
+        report_file.writelines(sorted(self.unavailable_files, key=component_key))
 
 
 def main():
@@ -340,6 +340,8 @@ def main():
         cursor_position = RPR_GetCursorPosition()
 
         my_reaper_clip_splicer.render_components(cursor_position)
+
+        my_reaper_clip_splicer.generate_report()
 
 if __name__ == "__main__":
     main()
