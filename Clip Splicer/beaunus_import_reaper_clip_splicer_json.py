@@ -211,17 +211,14 @@ class ReaperClipSplicer:
 
         # Add the previous item's source to this one.
         this_take = RPR_GetActiveTake(new_item)
-        prev_take = RPR_GetActiveTake(prev_item)
-        prev_source = RPR_GetMediaItemTake_Source(prev_take)
-        RPR_SetMediaItemTake_Source(this_take, prev_source)
+        RPR_GetSetMediaItemTakeInfo_String(
+            this_take, "P_NAME", prev_item_name, True)
+#         prev_take = RPR_GetActiveTake(prev_item)
+#         prev_source = RPR_GetMediaItemTake_Source(prev_take)
+#         RPR_SetMediaItemTake_Source(this_take, prev_source)
 
         # Increment the cursor_position.
         cursor_position += RPR_GetMediaItemInfo_Value(new_item, "D_LENGTH")
-
-        # Get the newly created take and name it accordingly.
-        this_take = RPR_GetActiveTake(new_item)
-        RPR_GetSetMediaItemTakeInfo_String(
-            this_take, "P_NAME", prev_item_name, True)
 
         return (cursor_position, new_item)
 
@@ -388,6 +385,8 @@ def main():
         my_reaper_clip_splicer = ReaperClipSplicer(specification, folder)
         my_reaper_clip_splicer.render_components(cursor_position)
         my_reaper_clip_splicer.generate_report()
+
+    RPR_Main_SaveProject(0, False)
 
 if __name__ == "__main__":
     main()
