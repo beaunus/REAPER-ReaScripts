@@ -17,7 +17,6 @@ import os
 # pylint: disable=pointless-string-statement
 """
 TODO:
-add markers and regions
 """
 # pylint: disable=undefined-variable
 
@@ -304,11 +303,23 @@ class ReaperClipSplicer:
                     track_region_color = RPR_ColorToNative(
                         255, 0, 255) | 0x1000000
                     RPR_AddProjectMarker2(
-                        0, True, beginning_of_track, cursor_position, "TRACK " + str(track_index), 0, track_region_color)
+                        0,
+                        True,
+                        beginning_of_track,
+                        cursor_position,
+                        "TRACK " + str(track_index),
+                        0,
+                        track_region_color)
                     track_index += 1
             disc_region_color = RPR_ColorToNative(255, 255, 0) | 0x1000000
             RPR_AddProjectMarker2(
-                0, True, beginning_of_disc, cursor_position, "DISC " + disc_name, 0, disc_region_color)
+                0,
+                True,
+                beginning_of_disc,
+                cursor_position,
+                "DISC " + disc_name,
+                0,
+                disc_region_color)
 
     def add_component(self, component, cursor_position, prev_item):
         """Adds the specified component to the session.
