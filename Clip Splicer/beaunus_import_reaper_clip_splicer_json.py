@@ -288,8 +288,11 @@ class ReaperClipSplicer:
         # Iterate over each disc
         # pylint: disable=unused-variable
         for disc_name, disc_val in self.discs.iteritems():
+            beginning_of_disc = cursor_position
             # Iterate over each track
+            track_index = 1
             for track in disc_val:
+                beginning_of_track = cursor_position
                 prev_item = None
                 # Iterate over each component
                 if track is not None:
@@ -298,6 +301,14 @@ class ReaperClipSplicer:
                             self.add_component(
                                 component, cursor_position, prev_item)
                         RPR_SetEditCurPos(cursor_position, False, False)
+                    track_region_color = RPR_ColorToNative(
+                        255, 0, 255) | 0x1000000
+                    RPR_AddProjectMarker2(
+                        0, True, beginning_of_track, cursor_position, "TRACK " + str(track_index), 0, track_region_color)
+                    track_index += 1
+            disc_region_color = RPR_ColorToNative(255, 255, 0) | 0x1000000
+            RPR_AddProjectMarker2(
+                0, True, beginning_of_disc, cursor_position, "DISC " + disc_name, 0, disc_region_color)
 
     def add_component(self, component, cursor_position, prev_item):
         """Adds the specified component to the session.
