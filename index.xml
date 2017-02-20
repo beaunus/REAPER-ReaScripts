@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" commit="885164163847e5b286da1d69dce0b978f2b27477" name="Beaunus Scripts">
+<index version="1" commit="9e48e1ec71a91f56b39b478b4c72506579f19b94" name="Beaunus Scripts">
   <category name="Clip Splicer">
-    <reapack name="beaunus_Import reaper-clip-splicer JSON.py" type="script">
-      <version name="1.0" author="beaunus" time="2017-01-08T06:36:30Z">
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/885164163847e5b286da1d69dce0b978f2b27477/Clip%20Splicer/beaunus_Import%20reaper-clip-splicer%20JSON.py</source>
-      </version>
-      <version name="1.1" author="beaunus" time="2017-01-08T06:40:51Z">
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/74b8945b5aed710e0d2a031dc017d69692d7fdde/Clip%20Splicer/beaunus_Import%20reaper-clip-splicer%20JSON.py</source>
-      </version>
-    </reapack>
-  </category>
-  <category name="Items">
-    <reapack name="beaunus_Name item takes by last marker to cut item.lua" type="script">
-      <version name="1.0" author="beaunus" time="2017-01-04T07:30:38Z">
-        <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/a4e467dd7e239d0e6c963313470625b25c12e7bd/Items/beaunus_Name%20item%20takes%20by%20last%20marker%20to%20cut%20item.lua</source>
+    <reapack name="beaunus_import_reaper_clip_splicer_json.py" type="script">
+      <version name="1.0" author="beaunus" time="2017-02-08T02:52:14Z">
+        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/65ed996c45ace7801fcdcfaf7781e32b527964dd/Clip%20Splicer/beaunus_import_reaper_clip_splicer_json.py</source>
       </version>
     </reapack>
   </category>
@@ -43,14 +32,6 @@
       </version>
       <version name="1.1" author="beaunus" time="2017-01-03T01:31:08Z">
         <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/e33adfdc75c4395677860b04d3d41a6557266939/JSFX/beaunus_Wave%20Shaper.jsfx</source>
-      </version>
-    </reapack>
-  </category>
-  <category name="Lyrics">
-    <reapack name="beaunus_Add markers for lyrics in selected items.lua" type="script">
-      <version name="1.0" author="beaunus" time="2017-01-03T01:12:30Z">
-        <changelog><![CDATA[+ Initial Release]]></changelog>
-        <source main="true">https://github.com/beaunus/REAPER-ReaScripts/raw/1b924fdb4e2f27a9f1635d4a4921cfb4b3a3ba1e/Lyrics/beaunus_Add%20markers%20for%20lyrics%20in%20selected%20items.lua</source>
       </version>
     </reapack>
   </category>
