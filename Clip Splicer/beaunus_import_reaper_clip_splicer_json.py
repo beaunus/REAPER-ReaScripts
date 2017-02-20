@@ -386,7 +386,5 @@ def main():
         my_reaper_clip_splicer.render_components(cursor_position)
         my_reaper_clip_splicer.generate_report()
 
-    RPR_Main_SaveProject(0, False)
-
 if __name__ == "__main__":
     main()
